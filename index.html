@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <title>iNote</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script>
+    // function loaded(){
+    //   alert("CONNECTED")
+    // }
+    lastRecord = 0;
+
+    function pullMore() {
+      // alert("CONNECTED")
+      var xmlhttp;
+      if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome,etc.
+        xmlhttp = new XMLHttpRequest();
+      } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      // More codes here for the next step.
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          // The client’s action when the response is ready.
+          // Your task: Add your code here
+          document.getElementById("Note").innerHTML += xmlhttp.responseText;
+        }
+
+      }
+      xmlhttp.open("GET", "queryNote.php?lastRecord=" + lastRecord, true);
+      xmlhttp.send()
+      lastRecord += 3
+    }
+
+
+    function changeState(elem) {
+
+      var oldValue = elem.innerHTML;
+      var noteID = elem.parentNode.getAttribute('id');
+      if (oldValue == 'Y') {
+        newvalue = 'N';
+      } else {
+        newvalue = 'Y';
+      }
+      var xmlhttp;
+      if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome,etc.
+        xmlhttp = new XMLHttpRequest();
+      } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      //More codes here for the next step.
+
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          // The client&#65533;&#17389; action when the response is ready.
+          // Your task: Add your code here
+          elem.innerHTML = newvalue;
+
+        }
+      }
+      xmlhttp.open("GET", "updateNoteState.php?newvalue=" + newvalue + "&noteID=" + noteID, true);
+      xmlhttp.send();
+
+
+    }
+  </script>
+</head>
+
+<body onload="pullMore();">
+  <div id="Checklist">
+    <div id="Note">
+    </div>
+    <div id="more" onclick="pullMore();">
+      <p> Showing More...</p>
+    </div>
+  </div>
+</body>
+
+</html>
